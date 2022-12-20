@@ -20,7 +20,6 @@ import {
   Wrap,
   WrapItem,
   Container,
-  Input,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -28,16 +27,8 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { useState } from "react";
-
 const ArticleList = ({ data }: any) => {
-  const [dt, setDt] = useState(data);
-  const comments = dt.comments;
-  const handleKeyDown = (event: any) => {
-    if (event.key === "Enter") {
-      console.log("do validate");
-    }
-  };
+  const comments = data.comments;
   return (
     <Container
       maxW={"7xl"}
@@ -46,15 +37,7 @@ const ArticleList = ({ data }: any) => {
       rounded={10}
       mt={5}
     >
-      <Box w="100%">
-        <Input
-          variant="outline"
-          placeholder="Search Symbol"
-          _placeholder={{ textAlign: "center", color: "gray.500" }}
-          onKeyDown={handleKeyDown}
-        />
-      </Box>
-      <Heading as="h2" marginTop="5" textAlign="center">
+      <Heading as="h2" marginTop="5">
         {data.symbol}
       </Heading>
       <Divider marginTop="5" />
@@ -94,6 +77,7 @@ const ArticleList = ({ data }: any) => {
     </Container>
   );
 };
+
 export async function getServerSideProps() {
   // Fetch data from external API
   const res = await fetch(
@@ -101,7 +85,7 @@ export async function getServerSideProps() {
   ).then(async (response) => {
     try {
       const data = await response.json();
-      return data
+      return data;
     } catch (error) {
       console.log("Error happened here!");
       console.error(error);

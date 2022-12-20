@@ -20,7 +20,6 @@ import {
   Wrap,
   WrapItem,
   Container,
-  Input,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -28,94 +27,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { useState } from "react";
 
-const ArticleList = ({ data }: any) => {
-  const [dt, setDt] = useState(data);
-  const comments = dt.comments;
-  const handleKeyDown = (event: any) => {
-    if (event.key === "Enter") {
-      console.log("do validate");
-    }
-  };
-  return (
-    <Container
-      maxW={"7xl"}
-      p="12"
-      backgroundColor="gray.50"
-      rounded={10}
-      mt={5}
-    >
-      <Box w="100%">
-        <Input
-          variant="outline"
-          placeholder="Search Symbol"
-          _placeholder={{ textAlign: "center", color: "gray.500" }}
-          onKeyDown={handleKeyDown}
-        />
-      </Box>
-      <Heading as="h2" marginTop="5" textAlign="center">
-        {data.symbol}
-      </Heading>
-      <Divider marginTop="5" />
-      <Wrap spacing="30px" marginTop="5">
-        {comments.map((comment: any) => {
-          return (
-            <WrapItem width={{ base: "100" }}>
-              <Box w="100%">
-                <HStack
-                  marginTop="2"
-                  spacing="2"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Text fontWeight="medium">{comment.date}</Text>
-                </HStack>
-                <Text
-                  as="p"
-                  fontSize="md"
-                  marginTop="2"
-                  backgroundColor={
-                    comment["label 1"] === 1
-                      ? "red.100"
-                      : comment["label 1"] === 2
-                      ? "green.100"
-                      : ""
-                  }
-                  rounded={5}
-                >
-                  {comment.comment}
-                </Text>
-              </Box>
-            </WrapItem>
-          );
-        })}
-      </Wrap>
-    </Container>
-  );
-};
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(
-    `https://somas.godata.id/sentiment?symbol=ICBP&start_from=0&end_at=30`
-  ).then(async (response) => {
-    try {
-      const data = await response.json();
-      return data
-    } catch (error) {
-      console.log("Error happened here!");
-      console.error(error);
-    }
-  });
 
-  // // const data = await res.text()
-  // // console.log(typeof JSON.parse(data))
-  const data = res;
-
-  return { props: { data } };
-}
-
-function WithSubnavigation() {
+export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -396,5 +310,3 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
 ];
-
-export default ArticleList;
